@@ -14,9 +14,8 @@ RUN install-php-extensions \
     pcntl \
     bcmath \
     zip \
-    xdebug-^3@stable
-
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+    xdebug-^3@stable \
+    @composer
 
 WORKDIR /var/www
 
