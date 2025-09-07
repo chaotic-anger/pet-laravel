@@ -1,0 +1,4 @@
+name: pet-laravel
+
+include:
+  - docker/compose.base.yml
