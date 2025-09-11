@@ -56,7 +56,7 @@ class PostTest extends TestCase
 
         $response->assertStatus(404)
             ->assertJson([
-                'type' => 'model-not-found',
+                'title' => 'Not Found',
                 'status' => 404,
             ]);
     }
@@ -80,7 +80,7 @@ class PostTest extends TestCase
     }
 
     #[Test]
-    public function it_validates_input_when_creating_post()
+    public function postCreateEmptyBodyError()
     {
         $response = $this->postJson('/api/posts', []);
 
@@ -89,7 +89,7 @@ class PostTest extends TestCase
     }
 
     #[Test]
-    public function it_can_update_a_post()
+    public function postUpdateSuccess()
     {
         $post = Post::factory()->create();
 
@@ -109,7 +109,7 @@ class PostTest extends TestCase
     }
 
     #[Test]
-    public function it_can_delete_a_post()
+    public function postDeleteSuccess()
     {
         $post = Post::factory()->create();
 

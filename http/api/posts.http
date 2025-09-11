@@ -7,8 +7,6 @@ POST {{host}}/api/posts
 Content-Type: {{content_type}}
 
 {
-  "title": "Пост-пример",
-  "content": "Содержимое поста"
 }
 
 ### Получить пост по ID
