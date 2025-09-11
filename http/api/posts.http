@@ -1,0 +1,29 @@
+### Получить список постов
+GET {{host}}/api/posts
+Content-Type: {{content_type}}
+
+### Создать новый пост
+POST {{host}}/api/posts
+Content-Type: {{content_type}}
+
+{
+  "title": "Пост-пример",
+  "content": "Содержимое поста"
+}
+
+### Получить пост по ID
+GET {{host}}/api/posts/1
+Content-Type: {{content_type}}
+
+### Обновить пост
+PUT {{host}}/api/posts/1
+Content-Type: {{content_type}}
+
+{
+  "title": "Обновлённый заголовок",
+  "content": "Обновлённое содержимое"
+}
+
+### Удалить пост
+DELETE {{host}}/api/posts/1
+Content-Type: {{content_type}}
