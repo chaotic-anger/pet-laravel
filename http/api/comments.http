@@ -1,0 +1,35 @@
+### Получить список комментариев поста
+GET {{host}}/api/posts/1/comments
+Content-Type: {{content_type}}
+
+### Создать новый коммент
+POST {{host}}/api/posts/1/comments
+Content-Type: {{content_type}}
+
+{
+  "content": "Содержимое комментария"
+}
+
+### Создать коммент у поста без данных (будет ошибка)
+POST {{host}}/api/posts/1/comments
+Content-Type: {{content_type}}
+
+{
+}
+
+### Получить комментарий поста по ID
+GET {{host}}/api/posts/1/comments/1
+Content-Type: {{content_type}}
+
+### Обновить комментарий
+PUT {{host}}/api/posts/1/comments/1
+Content-Type: {{content_type}}
+
+{
+  "content": "Обновлённый комментарий"
+}
+
+### Удалить пост
+DELETE {{host}}/api/posts/1/comments/1
+Content-Type: {{content_type}}
+

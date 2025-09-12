@@ -7,6 +7,15 @@ POST {{host}}/api/posts
 Content-Type: {{content_type}}
 
 {
+  "title": "Заголовок поста",
+  "content": "Содержимое поста"
+}
+
+### Создать пост без данных (будет ошибка)
+POST {{host}}/api/posts
+Content-Type: {{content_type}}
+
+{
 }
 
 ### Получить пост по ID
