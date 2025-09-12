@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PostDetailResource;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -31,7 +30,7 @@ class PostController extends Controller
     {
         $post->load('comments');
 
-        return new PostDetailResource($post);
+        return new PostResource($post);
     }
 
     public function update(Request $request, Post $post)

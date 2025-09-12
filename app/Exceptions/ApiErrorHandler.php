@@ -47,7 +47,7 @@ class ApiErrorHandler
 
     protected function responseForCommon(Throwable $e): JsonResponse
     {
-        $status = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : null;
+        $status = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : 500;
 
         return response()->json([
             'title' => $this->titles[$status],

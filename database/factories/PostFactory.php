@@ -33,7 +33,8 @@ class PostFactory extends Factory
         return $this->afterCreating(function (Post $post) use ($count) {
             Comment::factory()
                 ->count($count ?? rand(1, 5))
-                ->for($post)
+                ->for($post, 'post')
+                ->for(User::factory())
                 ->create();
         });
     }

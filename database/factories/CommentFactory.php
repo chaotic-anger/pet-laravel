@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Comment;
-use App\Models\Post;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,9 +15,10 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            'post_id' => Post::factory(),
+            'post_id' => null,
+            'user_id' => null,
             'content' => $this->faker->sentence(),
-            'rating' => $this->faker->numberBetween(-10, 50),
+            'rating' => 0,
         ];
     }
 }

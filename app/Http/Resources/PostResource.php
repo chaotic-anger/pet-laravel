@@ -30,9 +30,7 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'content' => $this->content,
             'created_at' => $this->created_at->toDateTimeString(),
-            'comments' => CommentResource::collection(
-                $this->whenLoaded('comments')->orderByDesc('rating')->get()
-            ),
+            'comments' => CommentResource::collection($this->whenLoaded('comments')->sortByDesc('rating')),
             'user' => [
                 'id' => $this->user->id,
                 'name' => $this->user->name,
