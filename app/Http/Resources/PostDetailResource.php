@@ -29,7 +29,7 @@ class PostDetailResource extends JsonResource
             'content' => $this->content,
             'created_at' => $this->created_at->toDateTimeString(),
             'comments' => CommentResource::collection(
-                $this->comments()->orderByDesc('rating')->get()
+                $this->whenLoaded('comments')->orderByDesc('rating')->get()
             )
         ];
     }

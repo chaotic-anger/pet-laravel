@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,8 +22,9 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->sentence(),   // случайное предложение
-            'content' => $this->faker->paragraph() // случайный абзац
+            'title' => $this->faker->sentence(),
+            'content' => $this->faker->paragraph(),
+            'user_id' => User::factory(),
         ];
     }
 
@@ -30,7 +32,7 @@ class PostFactory extends Factory
     {
         return $this->afterCreating(function (Post $post) use ($count) {
             Comment::factory()
-                ->count($count ?? rand(1, 5)) // по умолчанию от 1 до 5 комментариев
+                ->count($count ?? rand(1, 5))
                 ->for($post)
                 ->create();
         });

@@ -3,7 +3,7 @@
 namespace Tests\Feature\Api;
 
 
-use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\Api\PostController;
 use App\Models\Post;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\CoversClass;

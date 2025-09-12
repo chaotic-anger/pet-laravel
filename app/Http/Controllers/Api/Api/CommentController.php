@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Api;
 
 use App\Enums\VoteDirection;
 use App\Http\Controllers\Controller;

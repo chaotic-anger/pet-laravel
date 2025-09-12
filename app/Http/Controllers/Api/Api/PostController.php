@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostDetailResource;
@@ -29,6 +29,8 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
+        $post->load('comments');
+
         return new PostDetailResource($post);
     }
 

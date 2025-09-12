@@ -15,11 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
 
-        Post::factory()->count(5)->withComments()->create();
+        Post::factory()->for($user)->count(5)->withComments()->create();
     }
 }
