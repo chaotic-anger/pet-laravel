@@ -65,16 +65,31 @@ class CommentController extends Controller
         return response()->json(null, 204);
     }
 
-    public function vote(Post $post, Comment $comment, string $direction)
+    public function vote(Request $request, Post $post, Comment $comment, string $direction)
     {
+        if ($comment->post_id !== $post->id) {
+            abort(404);
+        }
+
         $dir = VoteDirection::from($direction);
+        $userId = $request->user()->id;
 
-        $comment->rating += match ($dir) {
-            VoteDirection::UP => 1,
-            VoteDirection::DOWN => -1,
-        };
-        $comment->save();
+        $existingVote = $comment->votes()->where('user_id', $userId)->first();
 
-        return response()->json(['rating' => $comment->rating]);
+        if (!$existingVote) {
+            $comment->votes()->create(['user_id' => $userId, 'direction' => $dir,]);
+        } else {
+            if ($existingVote->direction === $dir) {
+                return response()->json(['message' => 'Вы уже голосовали в этом направлении'], 400);
+            }
+
+            $existingVote->update([
+                'direction' => $dir,
+            ]);
+        }
+
+        $comment->refresh();
+
+        return response()->json(['rating' => $comment->rating,]);
     }
 }
