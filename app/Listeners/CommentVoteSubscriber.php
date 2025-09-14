@@ -27,7 +27,7 @@ class CommentVoteSubscriber
     public function changeCommentRatingByVoteChange(CommentVoteUpdated $event): void
     {
         $vote = $event->commentVote;
-        $original = VoteDirection::from($vote->getOriginal('direction'));
+        $original = $vote->getOriginal('direction');
         $this->rollbackRating($original, $vote);
         $this->applyRating($vote);
         $vote->comment->save();

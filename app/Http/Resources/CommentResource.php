@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
@@ -11,6 +12,7 @@ use Illuminate\Support\Carbon;
  * @property string $content
  * @property int $rating
  * @property Carbon $created_at
+ * @property User $user
  */
 class CommentResource extends JsonResource
 {
@@ -26,6 +28,11 @@ class CommentResource extends JsonResource
             'content' => $this->content,
             'rating' => $this->rating,
             'created_at' => $this->created_at->toDateTimeString(),
+            'user' => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+            ]
         ];
     }
 }

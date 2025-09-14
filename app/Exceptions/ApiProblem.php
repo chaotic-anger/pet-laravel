@@ -49,7 +49,7 @@ final class ApiProblem
         ];
 
         if (is_a($this->exception, ValidationException::class)) {
-            $formatted['error'] = $this->exception->errors();
+            $formatted['errors'] = $this->exception->errors();
         }
 
         return $formatted;
