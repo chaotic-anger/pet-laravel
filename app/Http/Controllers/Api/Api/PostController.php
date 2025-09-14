@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PostDetailResource;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -17,23 +16,36 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
+        if (!$request->user()) {
+            abort(401);
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
         ]);
 
-        $post = Post::create($validated);
+        $post = Post::create(array_merge($validated, ['user_id' => $request->user()->id]));
 
         return new PostResource($post);
     }
 
     public function show(Post $post)
     {
-        return new PostDetailResource($post);
+        $post->load('comments');
+
+        return new PostResource($post);
     }
 
     public function update(Request $request, Post $post)
     {
+        if (!$user = $request->user()) {
+            abort(401);
+        }
+        if (!$user->can('update', $post)) {
+            abort(403);
+        }
+
         $validated = $request->validate([
             'title' => 'sometimes|required|string|max:255',
             'content' => 'sometimes|required|string',
@@ -44,8 +56,12 @@ class PostController extends Controller
         return new PostResource($post);
     }
 
-    public function destroy(Post $post)
+    public function destroy(Request $request, Post $post)
     {
+        if (!$request->user()?->can('delete', $post)) {
+            abort(403);
+        }
+
         $post->delete();
 
         return response()->json(null, 204);

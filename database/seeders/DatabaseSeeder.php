@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Comment;
+use App\Models\CommentVote;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -15,11 +17,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $author = User::factory()->create(['name' => 'Test User', 'email' => 'test@example.com']);
+        $users = User::factory()->count(10)->create();
+        Post::factory()->for($author)->count(5)->withComments(3)->create();
 
-        Post::factory()->count(5)->withComments()->create();
+        foreach (Comment::all() as $comment) {
+            $voters = $users->shuffle()->take(rand(1, 5));
+            foreach ($voters as $user) {
+                CommentVote::factory()->for($comment, 'comment')->for($user, 'user')->create();
+            }
+        }
     }
 }
