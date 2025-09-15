@@ -16,6 +16,8 @@ export default function AppPostDetail({postId}: AppPostDetailProps) {
     const [loadingComments, setLoadingComments] = useState<boolean>(true);
     const [newComment, setNewComment] = useState<string>('');
     const [submittingComment, setSubmittingComment] = useState<boolean>(false);
+    const [votingInProgress, setVotingInProgress] = useState<{ [commentId: number]: boolean }>({});
+
 
     useEffect(() => {
         setLoadingPost(true);
@@ -75,17 +77,26 @@ export default function AppPostDetail({postId}: AppPostDetailProps) {
     }
 
     async function handleVote(commentId: number, direction: 'up' | 'down') {
+        // помечаем, что для этого комментария идёт голосование
+        setVotingInProgress(prev => ({...prev, [commentId]: true}));
+
         try {
             const resp = await CommentsAPI.vote(postId, commentId, direction);
+
             setComments(prev =>
                 prev.map(c =>
-                    c.id === commentId ? {...c, rating: resp.data.rating} : c
+                    c.id === commentId
+                        ? {...c, rating: resp.data.rating, userVoteDirection: direction}
+                        : c
                 )
             );
         } catch (err) {
             console.error('Failed to vote', err);
+        } finally {
+            setVotingInProgress(prev => ({...prev, [commentId]: false}));
         }
     }
+
 
     return (
         <div className="mt-6 space-y-6">
@@ -130,57 +141,24 @@ export default function AppPostDetail({postId}: AppPostDetailProps) {
                                     <Button
                                         size="sm"
                                         variant={c.userVoteDirection === 'up' ? 'secondary' : 'outline'}
-                                        onClick={async () => {
-                                            if (c.userVoteDirection) return; // уже голосовал
-                                            try {
-                                                const resp = await CommentsAPI.vote(c.post_id, c.id, 'up');
-                                                setComments(prev =>
-                                                    prev.map(comment =>
-                                                        comment.id === c.id ? {
-                                                            ...comment,
-                                                            rating: resp.data.rating,
-                                                            userVoteDirection: 'up'
-                                                        } : comment
-                                                    )
-                                                );
-                                            } catch (err) {
-                                                console.error('Failed to vote up', err);
-                                            }
-                                        }}
-                                        className={`scale-75 ${c.userVoteDirection === 'up' ? 'opacity-70 cursor-not-allowed' : ''}`}
-                                        disabled={!!c.userVoteDirection}
+                                        onClick={() => handleVote(c.id, 'up')}
+                                        className="scale-75"
+                                        disabled={c.userVoteDirection === 'down' || votingInProgress[c.id]}
                                     >
                                         👍
                                     </Button>
-
                                     <span
                                         className="text-sm text-gray-700 dark:text-gray-300 font-medium">{c.rating}</span>
-
                                     <Button
                                         size="sm"
                                         variant={c.userVoteDirection === 'down' ? 'secondary' : 'outline'}
-                                        onClick={async () => {
-                                            if (c.userVoteDirection) return; // уже голосовал
-                                            try {
-                                                const resp = await CommentsAPI.vote(c.post_id, c.id, 'down');
-                                                setComments(prev =>
-                                                    prev.map(comment =>
-                                                        comment.id === c.id ? {
-                                                            ...comment,
-                                                            rating: resp.data.rating,
-                                                            userVoteDirection: 'down'
-                                                        } : comment
-                                                    )
-                                                );
-                                            } catch (err) {
-                                                console.error('Failed to vote down', err);
-                                            }
-                                        }}
-                                        className={`scale-75 ${c.userVoteDirection === 'down' ? 'opacity-70 cursor-not-allowed' : ''}`}
-                                        disabled={!!c.userVoteDirection}
+                                        onClick={() => handleVote(c.id, 'down')}
+                                        className="scale-75"
+                                        disabled={c.userVoteDirection === 'up' || votingInProgress[c.id]}
                                     >
                                         👎
                                     </Button>
+
                                 </div>
 
 
