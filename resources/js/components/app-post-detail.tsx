@@ -30,10 +30,24 @@ export default function AppPostDetail({postId}: AppPostDetailProps) {
 
     useEffect(() => {
         setLoadingComments(true);
+
         CommentsAPI.list(postId)
-            .then(resp => {
-                const commentsArray = resp.data?.data ?? [];
-                setComments(commentsArray);
+            .then(async resp => {
+                const commentsArray: Comment[] = resp.data?.data ?? [];
+
+                // Для каждого комментария подгружаем статус голоса
+                const commentsWithVote = await Promise.all(
+                    commentsArray.map(async c => {
+                        try {
+                            const voteResp = await CommentsAPI.voteStatus(c.post_id, c.id);
+                            return {...c, userVoteDirection: voteResp.data.direction};
+                        } catch {
+                            return {...c, userVoteDirection: null};
+                        }
+                    })
+                );
+
+                setComments(commentsWithVote);
             })
             .catch(err => console.error('Failed to load comments', err))
             .finally(() => setLoadingComments(false));
@@ -105,10 +119,8 @@ export default function AppPostDetail({postId}: AppPostDetailProps) {
                         <Card key={c.id}
                               className="p-4 border border-gray-200 dark:border-gray-700 rounded-md shadow-sm">
                             <div className="flex flex-col space-y-3">
-                                {/* Контент комментария */}
                                 <p className="text-sm text-gray-700 dark:text-gray-300">{c.content}</p>
 
-                                {/* Метаинформация */}
                                 <div className="text-xs text-gray-500 dark:text-gray-400 flex flex-wrap gap-2">
                                     <span>by {c.user.name}</span>
                                     <span>• {new Date(c.created_at).toLocaleString()}</span>
@@ -117,15 +129,17 @@ export default function AppPostDetail({postId}: AppPostDetailProps) {
                                 <div className="flex items-center space-x-2 mt-2">
                                     <Button
                                         size="sm"
-                                        variant="outline"
+                                        variant={c.userVoteDirection === 'up' ? 'secondary' : 'outline'}
                                         onClick={async () => {
+                                            if (c.userVoteDirection) return; // уже голосовал
                                             try {
                                                 const resp = await CommentsAPI.vote(c.post_id, c.id, 'up');
                                                 setComments(prev =>
                                                     prev.map(comment =>
                                                         comment.id === c.id ? {
                                                             ...comment,
-                                                            rating: resp.data.rating
+                                                            rating: resp.data.rating,
+                                                            userVoteDirection: 'up'
                                                         } : comment
                                                     )
                                                 );
@@ -133,7 +147,8 @@ export default function AppPostDetail({postId}: AppPostDetailProps) {
                                                 console.error('Failed to vote up', err);
                                             }
                                         }}
-                                        className="scale-75"
+                                        className={`scale-75 ${c.userVoteDirection === 'up' ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                        disabled={!!c.userVoteDirection}
                                     >
                                         👍
                                     </Button>
@@ -143,15 +158,17 @@ export default function AppPostDetail({postId}: AppPostDetailProps) {
 
                                     <Button
                                         size="sm"
-                                        variant="outline"
+                                        variant={c.userVoteDirection === 'down' ? 'secondary' : 'outline'}
                                         onClick={async () => {
+                                            if (c.userVoteDirection) return; // уже голосовал
                                             try {
                                                 const resp = await CommentsAPI.vote(c.post_id, c.id, 'down');
                                                 setComments(prev =>
                                                     prev.map(comment =>
                                                         comment.id === c.id ? {
                                                             ...comment,
-                                                            rating: resp.data.rating
+                                                            rating: resp.data.rating,
+                                                            userVoteDirection: 'down'
                                                         } : comment
                                                     )
                                                 );
@@ -159,11 +176,13 @@ export default function AppPostDetail({postId}: AppPostDetailProps) {
                                                 console.error('Failed to vote down', err);
                                             }
                                         }}
-                                        className="scale-75"
+                                        className={`scale-75 ${c.userVoteDirection === 'down' ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                        disabled={!!c.userVoteDirection}
                                     >
                                         👎
                                     </Button>
                                 </div>
+
 
                             </div>
                         </Card>

@@ -16,12 +16,17 @@ export interface User {
 }
 
 export interface Comment {
+    userVoteDirection?: 'up' | 'down' | null;
     id: number;
     content: string;
     rating: number;
     created_at: string;
     post_id: number;
     user: User;
+}
+
+export interface CommentVoteStatus {
+    direction: 'up' | 'down' | null;
 }
 
 export interface Post {
@@ -82,4 +87,7 @@ export const CommentsAPI = {
 
     vote: (postId: number, commentId: number, direction: 'up' | 'down') =>
         api.post<{ rating: number }>(`/posts/${postId}/comments/${commentId}/vote/${direction}`),
+
+    voteStatus: (postId: number, commentId: number) =>
+        api.get<CommentVoteStatus>(`/posts/${postId}/comments/${commentId}/vote-status`)
 };

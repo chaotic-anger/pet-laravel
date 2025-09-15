@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Api;
 use App\Enums\VoteDirection;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CommentResource;
+use App\Http\Resources\CommentVoteResource;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -112,6 +113,20 @@ class CommentController extends Controller
 
         $comment->refresh();
 
-        return response()->json(['rating' => $comment->rating,]);
+        return response()->json(['rating' => $comment->rating]);
+    }
+
+    public function voteStatus(Request $request, Post $post, Comment $comment)
+    {
+        if (!$user = $request->user()) {
+            abort(401);
+        }
+        if ($comment->post_id !== $post->id) {
+            abort(404);
+        }
+
+        $existingVote = $comment->votes()->where('user_id', $user->id)->first();
+
+        return $existingVote ? CommentVoteResource::make($existingVote) : ['direction' => null];
     }
 }

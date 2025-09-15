@@ -2,6 +2,11 @@
 GET {{host}}/api/posts/1/comments
 Content-Type: {{content_type}}
 
+### Получить статус голоса за комментарий
+GET {{host}}/api/posts/1/comments/1/vote-status
+Content-Type: {{content_type}}
+
+
 ### Создать новый коммент
 POST {{host}}/api/posts/1/comments
 Content-Type: {{content_type}}
