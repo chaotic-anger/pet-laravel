@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Exceptions;
 
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +34,10 @@ final class ApiProblem
 
     private function ensureCode(Throwable $exception): int
     {
+        if ($exception instanceof AuthenticationException) {
+            return Response::HTTP_UNAUTHORIZED;
+        }
+
         if ($exception instanceof ValidationException) {
             return Response::HTTP_UNPROCESSABLE_ENTITY;
         }

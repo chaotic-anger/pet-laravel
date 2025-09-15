@@ -127,6 +127,6 @@ class CommentController extends Controller
 
         $existingVote = $comment->votes()->where('user_id', $user->id)->first();
 
-        return $existingVote ? CommentVoteResource::make($existingVote) : ['direction' => null];
+        return $existingVote ? CommentVoteResource::make($existingVote) : ['data' => ['direction' => null]];
     }
 }

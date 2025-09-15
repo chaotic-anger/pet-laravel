@@ -23,7 +23,9 @@ class PostTest extends TestCase
         $author = User::factory()->create();
         $post = Post::factory()->for($author)->create();
 
-        $response = $this->getJson('/api/posts');
+        $response = $this
+            ->actingAs($author)
+            ->getJson('/api/posts');
         $response
             ->assertOk()
             ->assertJsonStructure([
@@ -51,7 +53,9 @@ class PostTest extends TestCase
         $author = User::factory()->create();
         Post::factory()->count(15)->for($author)->create();
 
-        $response = $this->getJson('/api/posts');
+        $response = $this
+            ->actingAs($author)
+            ->getJson('/api/posts');
 
         $response
             ->assertOk()
@@ -66,7 +70,9 @@ class PostTest extends TestCase
         $author = User::factory()->create();
         $posts = Post::factory()->count(15)->for($author)->create();
 
-        $firstPageResponse = $this->getJson('/api/posts?page=1');
+        $firstPageResponse = $this
+            ->actingAs($author)
+            ->getJson('/api/posts?page=1');
         $firstPageResponse
             ->assertOk()
             ->assertJsonStructure([
@@ -101,7 +107,9 @@ class PostTest extends TestCase
             Comment::factory()->for($commentator)->for($post)->create();
         }
 
-        $response = $this->getJson("/api/posts/$post->id");
+        $response = $this
+            ->actingAs($author)
+            ->getJson("/api/posts/$post->id");
 
         $response
             ->assertOk()
@@ -125,7 +133,9 @@ class PostTest extends TestCase
         $author = User::factory()->create();
         $post = Post::factory()->for($author)->create();
 
-        $response = $this->getJson("/api/posts/$post->id");
+        $response = $this
+            ->actingAs($author)
+            ->getJson("/api/posts/$post->id");
         $response
             ->assertOk()
             ->assertJsonPath('data.id', $post->id)
@@ -145,7 +155,9 @@ class PostTest extends TestCase
     #[Test]
     public function show_returns_404_for_nonexistent_post()
     {
-        $this->getJson('/api/posts/999')->assertNotFound();
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->getJson('/api/posts/999')->assertNotFound();
     }
 
     #[Test]
