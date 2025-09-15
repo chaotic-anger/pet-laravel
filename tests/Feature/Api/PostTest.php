@@ -3,9 +3,9 @@
 namespace Tests\Feature\Api;
 
 
-use App\Api\Http\Controllers\PostController;
-use App\Api\Models\Comment;
-use App\Api\Models\Post;
+use App\Api\Domain\Models\Comment;
+use App\Api\Domain\Models\Post;
+use App\Api\Presentation\Http\Controllers\PostController;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\CoversClass;

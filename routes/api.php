@@ -1,7 +1,7 @@
 <?php
 
-use App\Api\Http\Controllers\CommentController;
-use App\Api\Http\Controllers\PostController;
+use App\Api\Presentation\Http\Controllers\CommentController;
+use App\Api\Presentation\Http\Controllers\PostController;
 
 Route::middleware(['web', 'auth'])->group(function () {
     Route::apiResource('posts', PostController::class);

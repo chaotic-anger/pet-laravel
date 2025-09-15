@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Api\Models\Comment;
-use App\Api\Models\CommentVote;
-use App\Api\Models\Post;
+use App\Api\Domain\Models\Comment;
+use App\Api\Domain\Models\CommentVote;
+use App\Api\Domain\Models\Post;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;

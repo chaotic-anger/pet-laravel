@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+
+namespace App\Api\Presentation\Http\Resources;
+
+
+use App\Api\Shared\Enums\VoteDirection;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+/**
+ * @property VoteDirection $direction
+ */
+class CommentVoteResource extends JsonResource
+{
+    public function toArray(Request $request)
+    {
+        return [
+            'direction' => $this->direction->value
+        ];
+    }
+}

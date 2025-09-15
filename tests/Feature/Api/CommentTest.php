@@ -5,10 +5,10 @@ declare(strict_types=1);
 
 namespace Feature\Api;
 
-use App\Api\Enums\VoteDirection;
-use App\Api\Http\Controllers\CommentController;
-use App\Api\Models\Comment;
-use App\Api\Models\Post;
+use App\Api\Domain\Models\Comment;
+use App\Api\Domain\Models\Post;
+use App\Api\Presentation\Http\Controllers\CommentController;
+use App\Api\Shared\Enums\VoteDirection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\CoversClass;

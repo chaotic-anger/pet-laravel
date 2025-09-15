@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Api\Events\Listeners\CommentVoteSubscriber;
-use App\Api\Models\Comment;
-use App\Api\Models\Post;
-use App\Api\Policies\CommentPolicy;
-use App\Api\Policies\PostPolicy;
+use App\Api\Domain\Models\Comment;
+use App\Api\Domain\Models\Post;
+use App\Api\Domain\Policies\CommentPolicy;
+use App\Api\Domain\Policies\PostPolicy;
+use App\Api\Infrastructure\Listeners\CommentVoteSubscriber;
 use Gate;
 use Illuminate\Support\ServiceProvider;
 
