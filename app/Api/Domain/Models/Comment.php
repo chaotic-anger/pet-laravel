@@ -19,6 +19,7 @@ class Comment extends Model
         'user_id',
         'content',
         'rating',
+        'direction',
     ];
 
     protected $attributes = [
