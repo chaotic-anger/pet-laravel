@@ -20,6 +20,7 @@ final class ApiProblem
         Response::HTTP_FORBIDDEN => 'Forbidden',
         Response::HTTP_NOT_FOUND => 'Not Found',
         Response::HTTP_METHOD_NOT_ALLOWED => 'Method Not Allowed',
+        Response::HTTP_UNSUPPORTED_MEDIA_TYPE => 'Unsupported Media Type',
         Response::HTTP_UNPROCESSABLE_ENTITY => 'Validation Error',
         Response::HTTP_INTERNAL_SERVER_ERROR => 'Internal Server Error',
     ];
