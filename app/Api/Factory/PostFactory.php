@@ -1,14 +1,14 @@
 <?php
 
-namespace Database\Factories;
+namespace App\Api\Factory;
 
-use App\Models\Comment;
-use App\Models\Post;
+use App\Api\Models\Comment;
+use App\Api\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Api\Models\Post>
  */
 class PostFactory extends Factory
 {

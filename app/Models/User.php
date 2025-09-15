@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Api\Models\Comment;
+use App\Api\Models\CommentVote;
+use App\Api\Models\Post;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<\Feature\Api\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**

@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Api\Models;
 
-use App\Enums\VoteDirection;
-use App\Events\CommentVoteCreated;
-use App\Events\CommentVoteDeleted;
-use App\Events\CommentVoteUpdated;
+use App\Api\Enums\VoteDirection;
+use App\Api\Events\CommentVoteCreated;
+use App\Api\Events\CommentVoteDeleted;
+use App\Api\Events\CommentVoteUpdated;
+use App\Api\Factory\CommentVoteFactory;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +17,7 @@ use Illuminate\Notifications\Notifiable;
 class CommentVote extends Model
 {
     use HasFactory, Notifiable;
+
 
     protected $fillable = [
         'user_id',
@@ -35,6 +39,11 @@ class CommentVote extends Model
         'updated' => CommentVoteUpdated::class,
         'deleted' => CommentVoteDeleted::class,
     ];
+
+    protected static function newFactory(): CommentVoteFactory|Factory
+    {
+        return CommentVoteFactory::new();
+    }
 
     public function user(): BelongsTo
     {

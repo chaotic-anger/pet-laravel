@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace App\Exceptions;
+namespace App\Api\Exceptions;
 
 
 use Illuminate\Auth\AuthenticationException;

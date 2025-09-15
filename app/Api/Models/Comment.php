@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Api\Models;
 
-use Database\Factories\CommentFactory;
+use App\Api\Factory\CommentFactory;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +29,11 @@ class Comment extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    protected static function newFactory(): CommentFactory|Factory
+    {
+        return CommentFactory::new();
+    }
 
     public function post(): BelongsTo
     {

@@ -1,15 +1,15 @@
 <?php
 
-namespace Database\Factories;
+namespace App\Api\Factory;
 
-use App\Enums\VoteDirection;
-use App\Models\Comment;
-use App\Models\CommentVote;
+use App\Api\Enums\VoteDirection;
+use App\Api\Models\Comment;
+use App\Api\Models\CommentVote;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CommentVote>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Api\Models\CommentVote>
  */
 class CommentVoteFactory extends Factory
 {

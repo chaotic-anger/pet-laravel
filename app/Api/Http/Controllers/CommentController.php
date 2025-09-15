@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api\Api;
+namespace App\Api\Http\Controllers;
 
-use App\Enums\VoteDirection;
+use App\Api\Enums\VoteDirection;
+use App\Api\Http\Resources\CommentResource;
+use App\Api\Http\Resources\CommentVoteResource;
+use App\Api\Models\Comment;
+use App\Api\Models\Post;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CommentResource;
-use App\Http\Resources\CommentVoteResource;
-use App\Models\Comment;
-use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller

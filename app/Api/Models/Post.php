@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Api\Models;
 
-use Database\Factories\PostFactory;
+use App\Api\Factory\PostFactory;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,6 +25,11 @@ class Post extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    protected static function newFactory(): PostFactory|Factory
+    {
+        return PostFactory::new();
+    }
 
     public function user(): BelongsTo
     {

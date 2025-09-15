@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Api\Events\Listeners;
 
-use App\Enums\VoteDirection;
-use App\Events\CommentVoteCreated;
-use App\Events\CommentVoteDeleted;
-use App\Events\CommentVoteUpdated;
-use App\Models\CommentVote;
+use App\Api\Enums\VoteDirection;
+use App\Api\Events\CommentVoteCreated;
+use App\Api\Events\CommentVoteDeleted;
+use App\Api\Events\CommentVoteUpdated;
+use App\Api\Models\CommentVote;
 
 class CommentVoteSubscriber
 {

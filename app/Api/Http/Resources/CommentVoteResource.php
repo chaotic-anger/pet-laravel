@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 
-namespace App\Http\Resources;
+namespace App\Api\Http\Resources;
 
 
-use App\Enums\VoteDirection;
+use App\Api\Enums\VoteDirection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

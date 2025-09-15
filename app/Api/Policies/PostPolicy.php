@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Policies;
+namespace App\Api\Policies;
 
-use App\Models\Post;
+use App\Api\Models\Post;
 use App\Models\User;
 
 class PostPolicy

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Policies;
+namespace App\Api\Policies;
 
-use App\Models\Comment;
-use App\Models\Post;
+use App\Api\Models\Comment;
+use App\Api\Models\Post;
 use App\Models\User;
 
 class CommentPolicy

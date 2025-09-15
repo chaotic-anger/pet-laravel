@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Comment;
-use App\Models\CommentVote;
-use App\Models\Post;
+use App\Api\Models\Comment;
+use App\Api\Models\CommentVote;
+use App\Api\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 

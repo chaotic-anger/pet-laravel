@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Events;
+namespace App\Api\Events;
 
-use App\Models\CommentVote;
+use App\Api\Models\CommentVote;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CommentVoteUpdated
+class CommentVoteDeleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

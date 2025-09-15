@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Api\Http\Resources;
 
-use App\Models\Comment;
+use App\Api\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 
 /**
  * @property int $id
- * @property string $title
  * @property string $content
+ * @property int $rating
  * @property Carbon $created_at
- * @property Collection<Comment> $comments
+ * @property Post $post
  * @property User $user
  */
-class PostResource extends JsonResource
+class CommentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -28,17 +27,15 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
             'content' => $this->content,
+            'rating' => $this->rating,
             'created_at' => $this->created_at->toDateTimeString(),
-            'comments' => CommentResource::collection(
-                $this->whenLoaded('comments', fn() => $this->comments->sortByDesc('rating'))
-            ),
+            'post_id' => $this->post->id,
             'user' => [
                 'id' => $this->user->id,
                 'name' => $this->user->name,
                 'email' => $this->user->email,
-            ],
+            ]
         ];
     }
 }
