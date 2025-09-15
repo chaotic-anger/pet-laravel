@@ -3,12 +3,14 @@ import {PaginatedResponse, Post, PostsAPI} from '@/lib/api';
 import {Card} from '@/components/ui/card';
 import {Button} from '@/components/ui/button';
 import {Skeleton} from '@/components/ui/skeleton';
+import AppPostDetail from './app-post-detail';
 
 export default function PostsList() {
     const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [page, setPage] = useState<number>(1);
     const [meta, setMeta] = useState<PaginatedResponse<Post>['meta'] | null>(null);
+    const [selectedPostId, setSelectedPostId] = useState<number | null>(null); // для выбранного поста
 
     useEffect(() => {
         load(page);
@@ -27,6 +29,22 @@ export default function PostsList() {
         }
     }
 
+    if (selectedPostId) {
+        return (
+            <div className="mt-6">
+                <Button
+                    variant="secondary"
+                    onClick={() => setSelectedPostId(null)}
+                    className="mb-4"
+                >
+                    ← Back to posts
+                </Button>
+
+                <AppPostDetail postId={selectedPostId}/>
+            </div>
+        );
+    }
+
     return (
         <div className="mt-6">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">Latest posts</h2>
@@ -42,7 +60,11 @@ export default function PostsList() {
             ) : (
                 <div className="space-y-4">
                     {posts.map((p) => (
-                        <Card key={p.id} className="p-4 border border-gray-200 dark:border-gray-700">
+                        <Card
+                            key={p.id}
+                            className="p-4 border border-gray-200 dark:border-gray-700 cursor-pointer hover:shadow-md"
+                            onClick={() => setSelectedPostId(p.id)}
+                        >
                             <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">{p.title}</h3>
                             <p className="text-sm text-gray-700 dark:text-gray-300 mt-1 line-clamp-3">{p.content}</p>
                             <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">

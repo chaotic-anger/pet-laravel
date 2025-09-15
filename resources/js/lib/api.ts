@@ -18,6 +18,8 @@ export interface Comment {
     id: number;
     content: string;
     rating: number;
+    created_at: string;
+    post_id: number;
     user: User;
 }
 
