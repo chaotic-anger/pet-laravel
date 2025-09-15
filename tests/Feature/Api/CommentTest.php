@@ -30,7 +30,9 @@ class CommentTest extends TestCase
             Comment::factory()->for($post)->for($commentator)->create();
         }
 
-        $response = $this->getJson("/api/posts/$post->id/comments");
+        $response = $this
+            ->actingAs($author)
+            ->getJson("/api/posts/$post->id/comments");
 
         $response->assertOk()->assertJsonCount(3, 'data');
     }
@@ -43,7 +45,7 @@ class CommentTest extends TestCase
         $post = Post::factory()->for($author)->create();
         $comment = Comment::factory()->for($post)->for($commentator)->create();
 
-        $response = $this->getJson("/api/posts/$post->id/comments/$comment->id");
+        $response = $this->actingAs($author)->getJson("/api/posts/$post->id/comments/$comment->id");
 
         $response->assertOk()->assertJsonPath('data.id', $comment->id);
     }
@@ -57,7 +59,9 @@ class CommentTest extends TestCase
         $postWithComment = Post::factory()->for($author)->create();
         $comment = Comment::factory()->for($postWithComment)->for($commentator)->create();
 
-        $this->getJson("/api/posts/$post->id/comments/$comment->id")
+        $this
+            ->actingAs($author)
+            ->getJson("/api/posts/$post->id/comments/$comment->id")
             ->assertNotFound();
     }
 
@@ -219,5 +223,47 @@ class CommentTest extends TestCase
             ->actingAs($author)
             ->postJson("/api/posts/$post->id/comments/$comment->id/vote/up")
             ->assertStatus(400);
+    }
+
+    #[Test]
+    public function vote_status_structure_test()
+    {
+        $author = User::factory()->create();
+        $post = Post::factory()->for($author)->create();
+        $comment = Comment::factory()->for($post)->for($author)->create();
+
+        $response = $this
+            ->actingAs($author)
+            ->getJson("/api/posts/$post->id/comments/$comment->id/vote-status");
+        $response
+            ->assertOk()
+            ->assertJsonStructure(['data' => ['direction']])
+            ->assertJsonPath('data.direction', null);
+
+        $like = VoteDirection::UP;
+        $this
+            ->actingAs($author)
+            ->postJson("/api/posts/$post->id/comments/$comment->id/vote/$like->value");
+
+        $response = $this
+            ->actingAs($author)
+            ->getJson("/api/posts/$post->id/comments/$comment->id/vote-status");
+        $response
+            ->assertOk()
+            ->assertJsonStructure(['data' => ['direction']])
+            ->assertJsonPath('data.direction', $like->value);
+
+        $dislike = VoteDirection::DOWN;
+        $this
+            ->actingAs($author)
+            ->postJson("/api/posts/$post->id/comments/$comment->id/vote/$dislike->value");
+
+        $response = $this
+            ->actingAs($author)
+            ->getJson("/api/posts/$post->id/comments/$comment->id/vote-status");
+        $response
+            ->assertOk()
+            ->assertJsonStructure(['data' => ['direction']])
+            ->assertJsonPath('data.direction', $dislike->value);
     }
 }
