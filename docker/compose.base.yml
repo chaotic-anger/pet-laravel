@@ -23,7 +23,7 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
     working_dir: /var/www
-    user: 1000:1000
+    user: ${UID}:${GID}
     environment:
       PHP_IDE_CONFIG: "serverName=laravel"
     depends_on:
@@ -35,8 +35,10 @@ services:
     container_name: pet-laravel-mysql
     image: mysql:8
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: laravel
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: true
     ports:
       - "3306:3306"
     volumes:
